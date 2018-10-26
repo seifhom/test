@@ -1,0 +1,78 @@
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/opencv.hpp>
+#include<stdio.h>
+#include<iostream>
+#include<cmath>
+
+
+using namespace std;
+using namespace cv;
+
+
+	void select (float* T,int* R,int*C)
+{ float aux, aux1,aux2;
+int A;
+	do {
+	A=1;
+		for (int i = 0; i<8; i++)
+		{
+			if (T[i] > T[i + 1])
+			{
+				aux = T[i];
+				T[i] = T[i + 1];
+				T[i + 1] = aux;
+// this function is used for  shorting so we get theTwo pixels with lower brightness and the Two pixels with the higher brightness
+aux1 = R[i];
+				R[i] = R[i + 1];
+				R[i + 1] = aux1;
+aux2 = C[i];
+				C[i] = C[i + 1];
+				C[i + 1] = aux2;
+}
+A=0;
+// also we commutate the row and column index of each value in order to know which are the four pixel to modify also
+} }
+while (A=0);
+}
+
+
+int main()
+
+{
+
+Mat original = imread("m.png", 1);
+
+Mat image = imread("m.png", 1);
+
+for (int i = 1; i < image.rows-1; i++)
+{
+	for (int j = 1; j <image.cols-1 ; j++)
+	{
+		float average;
+		average = (image.at<uchar>(i, j + 1) + image.at<uchar>(i, j - 1) + image.at<uchar>(i + 1, j) + image.at<uchar>(i - 1, j) + image.at<uchar>(i - 1, j - 1) + image.at<uchar>(i - 1, j + 1) + image.at<uchar>(i + 1, j - 1) + image.at<uchar>(i + 1, j + 1) + image.at<uchar>(i, j)) / 9;
+//the average of of the 9 pixels surrounding the tested pixel
+
+		if ( fabs(image.at<uchar>(i, j) - average)> 10)		
+{
+			float pixels[9] = { image.at<uchar>(i, j + 1),image.at<uchar>(i, j - 1),image.at<uchar>(i + 1, j), image.at<uchar>(i - 1, j),image.at<uchar>(i - 1, j - 1),image.at<uchar>(i - 1, j + 1),image.at<uchar>(i + 1, j - 1),image.at<uchar>(i + 1, j + 1),image.at<uchar>(i, j) }; // make a table of the nine pixels
+int Row [9]=  { i, i,i + 1, i - 1,i - 1, i - 1, i + 1,i + 1, i }; // table of rows of the nine pixels
+int Column[9]={j+1,j-1,j,j,j-1,j+1,j-1,j+1,j};// table of column of the nine pixels
+			select (pixels,Row,Column); // sorting
+
+average = (pixels[2] + pixels[3] + pixels[4] + pixels[5] + pixels[6]) / 5; // changing the noise pixel and the two higher and lower pixels 
+image.at<uchar>(i, j) = average;
+image.at<uchar>(Row[0], Column[0]) = average;
+image.at<uchar>(Row[1], Column[1]) = average;
+image.at<uchar>(Row[7], Column[7]) = average;
+image.at<uchar>(Row[8], Column[8]) = average;
+
+		}
+	}
+}
+
+  imshow("original", original);   //displaying the original image
+	imshow("image", image);         //displaying the modified image
+waitKey(0);
+
+}
