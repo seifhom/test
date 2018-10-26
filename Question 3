@@ -1,0 +1,12 @@
+
+The Pros for question 2-1 :
+the  code is simple and requires less memory and time for execution. 
+the correction consider 4 surrounding pixel to make it compatible.
+The Cons for Question 2-1 :
+comparing to question 2-2 the correction of brightness is not better and not enough because it considers just 4 so we have less adaption.
+ 
+The Pros for question 2-2 :
+consider 9 pixel including the tested pixel itself will enhance the accuracy.
+The Cons for question 2-2 : 
+more time of execution,more memory allocation for variable, more complexity in the code.
+if the brightness changes a lot it will affect the test.
