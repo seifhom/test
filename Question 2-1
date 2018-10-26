@@ -1,0 +1,36 @@
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/opencv.hpp>
+#include<stdio.h>
+#include<iostream>
+#include<cmath>
+
+using namespace cv;
+using namespace std;
+
+
+int main()
+
+{
+	Mat original =imread ("m.png", 1); // loading image colored (1)
+
+	Mat modified = imread ("m.png", 1); // loading image to modify
+float  average;
+		for (int i = 1; i< modified.rows-1 ; i++) // to prevet border values
+		{
+			for (int j = 1; j <modified.cols-1 ; j++) // to prevet border values
+			{
+
+				average= (modified.at<uchar>(i, j + 1) + modified.at<uchar>(i, j - 1) + modified.at<uchar>(i + 1, j) + modified.at<uchar>(i - 1, j)) / 4; //the average of the surrounding 4 pixels
+					if (fabs(modified.at<uchar>(i, j)-average)>10)
+         {
+         modified.at<uchar>(i, j) = average;}
+			}
+		}
+
+// show the image
+
+imshow("image0", original);
+imshow("image1", modified);
+waitKey(0);
+}
