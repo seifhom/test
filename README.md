@@ -1,2 +1,2 @@
 # test
-C++ language and openCV library is used for this code created on code::blocks.
+C++ language and openCV library are used for this code created on code::blocks.
