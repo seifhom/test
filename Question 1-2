@@ -1,0 +1,40 @@
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/opencv.hpp>
+#include<stdio.h>
+#include<iostream>
+#include<cmath>
+
+using namespace cv;
+using namespace std;
+
+
+int main()
+
+{
+	float T[40][40];
+// make the data with cosine waves of brightness horizontally and vertically
+for (int i = 0;i<39;i++)
+{
+for (int j = 0;j<39;j++)
+{
+int y=round(j/4);
+int x=round(i/4);
+        if (( (y%2)==0) && ( (x%2)==0))
+            T[i][j] = 255;
+        else
+T[i][j] =  cos((j+i)* 3.14/(2*(39+39)))*255;
+
+}}
+
+//create the matrix from T
+Mat image (Size(40,40),CV_32FC1,T);
+
+// show the image
+// first convert the matrix to Uchar
+image.convertTo(image,CV_8UC1);
+namedWindow("image1",CV_WINDOW_FREERATIO);
+imshow("image1",image);
+waitKey(0);
+
+}
